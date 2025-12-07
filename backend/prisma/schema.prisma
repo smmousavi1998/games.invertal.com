@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+}
+
+model FormSubmission {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  message     String
+  meta        Json?    // store extra fields if needed
+  status      String   @default("new") // e.g., new, seen, responded
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Reservation {
+  id           String   @id @default(cuid())
+  name         String
+  email        String
+  phone        String?
+  date         DateTime
+  guests       Int
+  notes        String?
+  status       String   @default("pending") // pending, confirmed, cancelled
+  meta         Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
